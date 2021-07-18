@@ -74,23 +74,24 @@ class JsonException
         return $options;
     }
 
-    public function jsonException($keys = [])
+    public function jsonException($keys = [], $data = false)
     {
         $int_exception = false;
         $str_exception = false;
+        $data = $data ?: $this->data;
 
         foreach ($keys as $key) {
-            if (is_string($this->data[$key])) {
-                if (bin2hex($this->data[$key]) == $this->exceptions[1]) {
+            if (is_string($data[$key])) {
+                if (bin2hex($data[$key]) == $this->exceptions[1]) {
                     $str_exception = true;
                 }
-            } elseif (is_int($this->data[$key])) {
-                if (dechex($this->data[$key]) == $this->exceptions[0]) {
+            } elseif (is_int($data[$key])) {
+                if (dechex($data[$key]) == $this->exceptions[0]) {
                     $int_exception = true;
                 }
             }
         }
 
-        return !$int_exception && !$str_exception ? $this->data : false;
+        return !$int_exception && !$str_exception ? $data : false;
     }
 }
