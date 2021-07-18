@@ -1,0 +1,15 @@
+{
+  "name": "mockeries/json-exception",
+  "license": "GPL-3.0",
+  "authors": [
+    {
+      "name": "Mockeries"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Mockeries\\JsonException\\": "src/"
+    }
+  },
+  "minimum-stability": "dev"
+}
