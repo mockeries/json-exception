@@ -8,8 +8,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Mockeries\\JsonException\\": "src/",
-      "classmap": ["src/stubs"]
+      "Mockeries\\JsonException\\": "src/"
     }
   },
   "minimum-stability": "dev"
