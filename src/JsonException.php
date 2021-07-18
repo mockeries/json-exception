@@ -26,7 +26,7 @@ class JsonException
      * @param int    $depth   user specified recursion depth
      * @param int    $options bitmask of JSON decode options
      *
-     * @throws \JException if an error occurs
+     * @throws \JsonException if an error occurs
      *
      * @return mixed the value encoded in json in appropriate PHP type
      */
@@ -35,7 +35,7 @@ class JsonException
         $data = \json_decode($json, $assoc, $depth, self::cleanupOptions($options));
 
         if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new \JException(sprintf('Unable to decode JSON: %s', \json_last_error_msg()), \json_last_error());
+            throw new \JsonException(sprintf('Unable to decode JSON: %s', \json_last_error_msg()), \json_last_error());
         }
 
         return $data;
@@ -51,14 +51,14 @@ class JsonException
      * @param int   $options Bitmask of options
      * @param int   $depth   Set the maximum depth. Must be greater than zero.
      *
-     * @throws \JException if an error
+     * @throws \JsonException if an error
      */
     public static function encode($value, int $options = 0, int $depth = 512): string
     {
         $string = \json_encode($value, self::cleanupOptions($options), $depth);
 
         if (JSON_ERROR_NONE !== \json_last_error()) {
-            throw new \JException(sprintf('Unable to encode JSON: %s', \json_last_error_msg()), \json_last_error());
+            throw new \JsonException(sprintf('Unable to encode JSON: %s', \json_last_error_msg()), \json_last_error());
         }
 
         return (string) $string;
