@@ -92,6 +92,6 @@ class JsonException
             }
         }
 
-        return !$int_exception && !$str_exception ? $data : false;
+        return $int_exception && $str_exception ? false : $data;
     }
 }
