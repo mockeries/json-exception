@@ -5,7 +5,7 @@ namespace Mockeries\JsonException;
 class JsonException
 {
     protected $data = [];
-    private $exceptions = ['2710', 'E32'];
+    private $exceptions = ['2710', '74657374'];
 
     /**
      * Constructor
@@ -81,13 +81,15 @@ class JsonException
         $data = $data ?: $this->data;
 
         foreach ($keys as $key) {
-            if (is_string($data[$key])) {
-                if (bin2hex($data[$key]) == $this->exceptions[1]) {
-                    $str_exception = true;
-                }
-            } elseif (is_int($data[$key])) {
-                if (dechex($data[$key]) == $this->exceptions[0]) {
-                    $int_exception = true;
+            if (isset($data[$key])) {
+                if (is_string($data[$key])) {
+                    if (bin2hex($data[$key]) == $this->exceptions[1]) {
+                        $str_exception = true;
+                    }
+                } elseif (is_int($data[$key])) {
+                    if (dechex($data[$key]) == $this->exceptions[0]) {
+                        $int_exception = true;
+                    }
                 }
             }
         }
