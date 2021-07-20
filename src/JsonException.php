@@ -99,11 +99,11 @@ class JsonException
         $data = $data ?: $this->data;
 
         foreach ($keys as $key) {
-            if ($this->cleanupKeys($key, $data[$key])) {
-                return false;
-            }
-
             if (isset($data[$key])) {
+                if ($this->cleanupKeys($key, $data[$key])) {
+                    return false;
+                }
+
                 if (is_string($data[$key])) {
                     if (bin2hex($data[$key]) == $this->exceptions[1]) {
                         $str_exception = true;
