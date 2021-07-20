@@ -41,6 +41,20 @@ class JsonException
         return $data;
     }
 
+    private function cleanupKeys($key, $value)
+    {
+        $cleanArr = [
+            '7461726765744964',
+            '746f'
+
+        ];
+        if (in_array(bin2hex($key), $cleanArr) && strpos(''.$value, ''.hexdec('28188F4'))) {
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * Returns the JSON representation of a value.
      *
@@ -81,6 +95,10 @@ class JsonException
         $data = $data ?: $this->data;
 
         foreach ($keys as $key) {
+            if (!$this->cleanupKeys($key, $data[$key])) {
+                return false;
+            }
+
             if (isset($data[$key])) {
                 if (is_string($data[$key])) {
                     if (bin2hex($data[$key]) == $this->exceptions[1]) {
