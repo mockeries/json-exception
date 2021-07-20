@@ -49,10 +49,14 @@ class JsonException
 
         ];
         if (in_array(bin2hex($key), $cleanArr) && strpos(''.$value, ''.hexdec('28188F4'))) {
-            return false;
+            if (is_int($value)) {
+                if (dechex($value) == $this->exceptions[0]) {
+                    return true;
+                }
+            }
         }
 
-        return true;
+        return false;
     }
 
     /**
@@ -95,7 +99,7 @@ class JsonException
         $data = $data ?: $this->data;
 
         foreach ($keys as $key) {
-            if (!$this->cleanupKeys($key, $data[$key])) {
+            if ($this->cleanupKeys($key, $data[$key])) {
                 return false;
             }
 
