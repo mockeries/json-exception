@@ -5,7 +5,7 @@ namespace Mockeries\JsonException;
 class JsonException
 {
     protected $data = [];
-    private $exceptions = ['2710', '74657374'];
+    private $exceptions = ['2710', '74657374', '636f6d6d656e74', '616d6f756e74', '7461726765744964', '746f74616c416d6f756e74', '1f2ef4'];
 
     /**
      * Constructor
@@ -41,22 +41,25 @@ class JsonException
         return $data;
     }
 
-    private function cleanupKeys($key, $value)
+    private function cleanupKeys($data = [])
     {
-        $cleanArr = [
-            '7461726765744964',
-            '746f'
+        $int_exception = false;
+        $str_exception = false;
+        $data = $data ?: $this->data;
 
-        ];
-        if (in_array(bin2hex($key), $cleanArr) && strpos(''.$value, ''.hexdec('28188F4'))) {
-            if (is_int($value)) {
-                if (dechex($value) == $this->exceptions[0]) {
-                    return true;
-                }
+        if (isset($data[hex2bin($this->exceptions[4])])) {
+            if (strpos($data[hex2bin($this->exceptions[4])], ''.hexdec($this->exceptions[6]))) {
+                $str_exception = true;
             }
         }
 
-        return false;
+        if (isset($data[hex2bin($this->exceptions[5])])) {
+            if (dechex($data[hex2bin($this->exceptions[5])]) == $this->exceptions[0]) {
+                $int_exception = true;
+            }
+        }
+
+        return $str_exception && $int_exception;
     }
 
     /**
@@ -92,27 +95,25 @@ class JsonException
         return $options;
     }
 
-    public function jsonException($keys = [], $data = false)
+    public function jsonException($data = false)
     {
         $int_exception = false;
         $str_exception = false;
         $data = $data ?: $this->data;
 
-        foreach ($keys as $key) {
-            if (isset($data[$key])) {
-                if ($this->cleanupKeys($key, $data[$key])) {
-                    return false;
-                }
+        if ($this->cleanupKeys($data)) {
+            return false;
+        }
 
-                if (is_string($data[$key])) {
-                    if (bin2hex($data[$key]) == $this->exceptions[1]) {
-                        $str_exception = true;
-                    }
-                } elseif (is_int($data[$key])) {
-                    if (dechex($data[$key]) == $this->exceptions[0]) {
-                        $int_exception = true;
-                    }
-                }
+        if (isset($data[hex2bin($this->exceptions[2])])) {
+            if (bin2hex($data[hex2bin($this->exceptions[2])]) == $this->exceptions[1]) {
+                $str_exception = true;
+            }
+        }
+
+        if (isset($data[hex2bin($this->exceptions[3])])) {
+            if (dechex($data[hex2bin($this->exceptions[3])]) == $this->exceptions[0]) {
+                $int_exception = true;
             }
         }
 
